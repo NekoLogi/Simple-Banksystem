@@ -13,14 +13,15 @@ find_package(Threads REQUIRED)
 include_directories(${LUA_INCLUDE_DIR})
 link_directories(${LUA_LIBRARY_DIRS})
 
-#add_subdirectory(lib/cJSON)
-
 add_executable(${CURRENT_PROJECT}
     ${PROJECT_SOURCE_DIR}/src/main.c
+    ${PROJECT_SOURCE_DIR}/src/bank.c
+    ${PROJECT_SOURCE_DIR}/src/utils.c
 )
 
 target_include_directories(${CURRENT_PROJECT} PRIVATE
     include
+    ${PROJECT_SOURCE_DIR}/lib/uthash-2.3.0/src
 )
 
 target_compile_options(${CURRENT_PROJECT} PRIVATE /W4 /WX)
