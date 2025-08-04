@@ -1,0 +1,31 @@
+cmake_minimum_required(VERSION 3.30)
+set(CURRENT_PROJECT "bank")
+
+project(${CURRENT_PROJECT} C)
+
+set(CMAKE_C_STANDARD 99)
+set(CMAKE_C_STANDARD_REQUIRED ON)
+set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/bin)
+
+find_package(Threads REQUIRED)
+
+
+include_directories(${LUA_INCLUDE_DIR})
+link_directories(${LUA_LIBRARY_DIRS})
+
+#add_subdirectory(lib/cJSON)
+
+add_executable(${CURRENT_PROJECT}
+    ${PROJECT_SOURCE_DIR}/src/main.c
+)
+
+target_include_directories(${CURRENT_PROJECT} PRIVATE
+    include
+)
+
+target_compile_options(${CURRENT_PROJECT} PRIVATE /W4 /WX)
+
+target_link_libraries(${CURRENT_PROJECT} PRIVATE
+    Threads::Threads
+)
+
