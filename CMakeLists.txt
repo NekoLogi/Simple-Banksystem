@@ -9,10 +9,6 @@ set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/bin)
 
 find_package(Threads REQUIRED)
 
-
-include_directories(${LUA_INCLUDE_DIR})
-link_directories(${LUA_LIBRARY_DIRS})
-
 add_executable(${CURRENT_PROJECT}
     ${PROJECT_SOURCE_DIR}/src/main.c
     ${PROJECT_SOURCE_DIR}/src/bank.c
