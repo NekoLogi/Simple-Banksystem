@@ -35,11 +35,11 @@ typedef struct History
 typedef struct Bank
 {
     long id;
-    const char *firstName;
-    const char *lastName;
-    const char *country;
-    const char *city;
-    const char *street;
+    char *firstName;
+    char *lastName;
+    char *country;
+    char *city;
+    char *street;
     long double balance;
     struct History *history;
 

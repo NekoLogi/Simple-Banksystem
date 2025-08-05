@@ -6,9 +6,10 @@
 #include <unistd.h>
 #include "cache.h"
 
-#define MAX_RANDOM_ENTRIES	32
+#define MAX_RANDOM_ENTRIES 32
 
-struct key_record {
+struct key_record
+{
 	char *key;
 	char *value;
 };
@@ -22,9 +23,11 @@ void *producer(void *arg)
 	struct foo_cache *cache = arg;
 	int i;
 
-	for (i = 0; i < MAX_RANDOM_ENTRIES; i++) {
+	for (i = 0; i < MAX_RANDOM_ENTRIES; i++)
+	{
 		struct key_record *entry = NULL;
-		if (generate_random_entry(&entry)) {
+		if (generate_random_entry(&entry))
+		{
 			fprintf(stderr, "generate_random_entry() failed\n");
 			continue;
 		}
@@ -34,9 +37,10 @@ void *producer(void *arg)
 		printf("   Key: %s\n", entry->value);
 #else
 		printf("inserted %s (%d)\n", entry->key,
-		       (int)strlen(entry->key));
+			   (int)strlen(entry->key));
 #endif
-		if (foo_cache_insert(cache, entry->key, entry)) {
+		if (foo_cache_insert(cache, entry->key, entry))
+		{
 			fprintf(stderr, "foo_cache_insert() failed\n");
 			continue;
 		}
@@ -60,29 +64,33 @@ void *consumer(void *arg)
 	sleep(2);
 	printf("\n\n");
 
-	do {
+	do
+	{
 		memset(key, 0, 64);
 		result = NULL;
 
 		printf("Enter key for lookup: ");
 		fgets(buffer, sizeof(key), stdin);
-		sscanf(buffer, "%s\n", key);
+		sscanf_s(buffer, "%s\n", key);
 		/* read '\n' from stdin */
 		getchar();
 
-		if (strncmp(key, "exit", 4) == 0) {
+		if (strncmp(key, "exit", 4) == 0)
+		{
 			stop = 1;
 			continue;
 		}
 
 		printf("Got key %s (%d)\n", key, (int)strlen(key));
 
-		if (foo_cache_lookup(cache, key, &result)) {
+		if (foo_cache_lookup(cache, key, &result))
+		{
 			fprintf(stderr, "Could not retrieve key %s\n", key);
 			continue;
 		}
 
-		if (!result) {
+		if (!result)
+		{
 			printf("MISS\n");
 			continue;
 		}
@@ -105,8 +113,9 @@ int main()
 	pthread_t workers[2];
 
 	rv = foo_cache_create(&cache, MAX_RANDOM_ENTRIES / 2,
-			      free_random_entry);
-	if (rv) {
+						  free_random_entry);
+	if (rv)
+	{
 		fprintf(stderr, "Could not create cache\n");
 		exit(1);
 	}
@@ -139,7 +148,8 @@ int generate_random_entry(struct key_record **entry)
 	if (rv)
 		return rv;
 
-	if ((new = malloc(sizeof(*new))) == NULL) {
+	if ((new = malloc(sizeof(*new))) == NULL)
+	{
 		free(key);
 		free(value);
 		return ENOMEM;
@@ -155,7 +165,7 @@ int generate_random_entry(struct key_record **entry)
 int generate_random_string(char **dst, const size_t len)
 {
 	static const char alphanum[] =
-	    "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz";
+		"0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz";
 	size_t i;
 	char *s;
 
@@ -165,7 +175,8 @@ int generate_random_string(char **dst, const size_t len)
 	if ((s = malloc(len)) == NULL)
 		return ENOMEM;
 
-	for (i = 0; i < len - 1; i++) {
+	for (i = 0; i < len - 1; i++)
+	{
 		s[i] = alphanum[rand() % (sizeof(alphanum) - 1)];
 	}
 
